@@ -1,4 +1,4 @@
-﻿namespace SimpleTGBot;
+﻿namespace BoolFuncTGBot;
 
 public static class Program
 {
