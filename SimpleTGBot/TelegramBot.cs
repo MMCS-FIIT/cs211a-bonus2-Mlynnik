@@ -143,7 +143,7 @@ public class TelegramBot
                 "/enter_func - ожидается столбец значений булевой функции\n\n" +
                 "/classes_Post - выводит информацию о принадлежности функции классам Поста\n\n" +
                 "/polynomial - выводит функцию в виде полинома Жегалкина\n\n" +
-                "/basis - дополняет до базиса, если это возможно" +
+                "/basis - дополняет до базиса, если это возможно\n\n" +
                 "/download - скачивает html файл с полным отчетом по функции"
                 );
         }
@@ -270,11 +270,18 @@ public class TelegramBot
             }
         }
 
+        IReplyMarkup replay_now;
+        if (input_mode_now == Input_modes.Command_Func)
+            replay_now = GetButtons_2();
+        else if (input_mode_now == Input_modes.End)
+            replay_now = GetButtons_3();
+        else
+            replay_now = GetButtons_1();
 
         Message sentMessage = await botClient.SendTextMessageAsync(
             chatId: chatId,
             text: output_message.ToString(),
-            //replyMarkup: GetButtons(),
+            replyMarkup: replay_now,
             cancellationToken: cancellationToken);
     }
 
@@ -305,18 +312,41 @@ public class TelegramBot
 
 
     /// <summary>
-    /// кнопки для выполнения действий
+    /// кнопки для выполнения действий 1
     /// </summary>
-    static ReplyKeyboardMarkup GetButtons()
+    static IReplyMarkup GetButtons_1()
     {
-        return new(new[]
-        {
-            new KeyboardButton[] { "btn1" },
-            new KeyboardButton[] { "btn2" },
-        })
-        {
-            ResizeKeyboard = true
-        };
+        var Keyboard = new List<List<KeyboardButton>>
+            {
+                new List<KeyboardButton> { new KeyboardButton("/enter_func"), new KeyboardButton("/info"), },
+            };
+        return new ReplyKeyboardMarkup(Keyboard);
+    }
+
+    /// <summary>
+    /// кнопки для выполнения действий 2
+    /// </summary>
+    static IReplyMarkup GetButtons_2()
+    {
+        var Keyboard = new List<List<KeyboardButton>>
+            {
+                new List<KeyboardButton> { new KeyboardButton("/enter_func"), new KeyboardButton("/info"), },
+                new List<KeyboardButton> { new KeyboardButton("/classes_Post"), new KeyboardButton("/polynomial"), },
+                new List<KeyboardButton> { new KeyboardButton("/basis"), new KeyboardButton("/download"), }
+            };
+        return new ReplyKeyboardMarkup(Keyboard);
+    }
+
+    /// <summary>
+    /// кнопки для выполнения действий 3
+    /// </summary>
+    static IReplyMarkup GetButtons_3()
+    {
+        var Keyboard = new List<List<KeyboardButton>>
+            {
+                new List<KeyboardButton> { new KeyboardButton("/start"), new KeyboardButton("/info"), },
+            };
+        return new ReplyKeyboardMarkup(Keyboard);
     }
 
 }
