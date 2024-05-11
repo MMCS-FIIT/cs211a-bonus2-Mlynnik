@@ -119,14 +119,15 @@ namespace BoolFuncTGBot
                     {
                         if (vals[j] == 0)
                         {
+                            short count_greater = 0;
                             for (int k = 0; k < count_vars; k++)
                             {
                                 if (lst_sets[i][k] <= lst_sets[j][k])
                                 {
-                                    flag = false;
-                                    break;
+                                    count_greater++;
                                 }
                             }
+                            if (count_greater == count_vars) { flag = false; break; }
                         }
                     }
                 }
